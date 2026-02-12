@@ -1,0 +1,8 @@
+# Jangan upload folder ini karena sangat berat (bisa diunduh ulang lewat npm install)
+node_modules/
+
+# Jangan upload file ini karena berisi password database rahasia saya
+.env
+
+# Abaikan file log error yang tidak penting
+npm-debug.log*

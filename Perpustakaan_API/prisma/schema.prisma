@@ -1,0 +1,78 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Anggota {
+  id_anggota Int         @id @default(autoincrement())
+  nama       String      @db.VarChar(25)
+  alamat     String      @db.VarChar(25)
+  transaksi  Transaksi[]
+}
+
+model Jabatan {
+  id_jabatan   Int       @id @default(autoincrement())
+  nama_jabatan String    @unique @db.VarChar(25)
+  petugas      Petugas[]
+}
+
+model Petugas {
+  id_petugas Int         @id // Primary key, manual input
+  nama       String      @db.VarChar(25)
+  username   String      @unique @db.VarChar(25)
+  password   String      @db.Char(255)
+  id_jabatan Int
+  jabatan    Jabatan     @relation(fields: [id_jabatan], references: [id_jabatan])
+  transaksi  Transaksi[]
+}
+
+model Kategori {
+  id_kategori   Int      @id @default(autoincrement())
+  nama_kategori String   @db.VarChar(25)
+  buku          Buku[]
+}
+
+model Buku {
+  id_buku      Int                @id @default(autoincrement())
+  judul        String             @db.VarChar(25)
+  penulis      String             @db.VarChar(25)
+  penerbit     String             @db.VarChar(25)
+  tahun_terbit Int?               // Mapping untuk tipe Year
+  id_kategori  Int
+  status       String             @db.VarChar(25)
+  kategori     Kategori           @relation(fields: [id_kategori], references: [id_kategori])
+  detail       DetailPeminjaman[]
+}
+
+model Transaksi {
+  id_transaksi         Int                @id @default(autoincrement())
+  id_anggota           Int
+  id_petugas           Int
+  tanggal_pinjam       DateTime           @default(now())
+  tanggal_status_tempo DateTime           @db.Date
+  status               String             @db.VarChar(25) // Tambahkan panjang karakter
+  anggota              Anggota            @relation(fields: [id_anggota], references: [id_anggota])
+  petugas              Petugas            @relation(fields: [id_petugas], references: [id_petugas])
+  detail               DetailPeminjaman[]
+  pengembalian         Pengembalian[]
+}
+
+model DetailPeminjaman {
+  id_detail    Int       @id @default(autoincrement())
+  id_transaksi Int
+  id_buku      Int
+  transaksi    Transaksi @relation(fields: [id_transaksi], references: [id_transaksi])
+  buku         Buku      @relation(fields: [id_buku], references: [id_buku])
+}
+
+model Pengembalian {
+  id_pengembalian      Int       @id @default(autoincrement())
+  id_transaksi         Int
+  tanggal_pengembalian DateTime  @default(now())
+  denda                Decimal   @db.Decimal(10, 2)
+  transaksi            Transaksi @relation(fields: [id_transaksi], references: [id_transaksi])
+}
