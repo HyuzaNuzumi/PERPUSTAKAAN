@@ -43,7 +43,7 @@ router.put('/Pengembalian/:id', async (req, res) => {
     const { id } = req.params;
 
     //pengecekan id harus berupa angka
-    if(isNaN(id_transaksi)){
+    if(isNaN(id)){
         return res.status(400).json({
             message: "ID harus berupa angka yang valid"
             });
