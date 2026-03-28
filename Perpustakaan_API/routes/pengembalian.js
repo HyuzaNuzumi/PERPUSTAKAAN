@@ -15,6 +15,12 @@ router.get('/', async (req, res) => {
 //kirim data baru
 router.post('/', async (req,res) => {
     const { id_transaksi, denda } = req. body;
+        //pengecekan id harus berupa angka
+         if(isNaN(id_transaksi)){
+            return res.status(400).json({
+                message: "ID harus berupa angka yang valid"
+            });
+        }
     try {
         const baruPengembalian = await prisma.pengembalian.create({
             data: {
@@ -35,6 +41,13 @@ router.post('/', async (req,res) => {
 // pengembalianBuku
 router.put('/Pengembalian/:id', async (req, res) => {
     const { id } = req.params;
+
+    //pengecekan id harus berupa angka
+    if(isNaN(id_transaksi)){
+        return res.status(400).json({
+            message: "ID harus berupa angka yang valid"
+            });
+        }
     try {
         const pengembalianBaru = await prisma.transaksi.findUnique({
             where: { id_transaksi: Number(id) }
