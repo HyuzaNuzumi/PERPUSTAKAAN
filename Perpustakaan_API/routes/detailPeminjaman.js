@@ -41,7 +41,7 @@ router.get('/:id', async (req, res) => {
         });
         //pengecekan apakah idDetail ada
             if(!detailpeminjaman) {
-                return res.status(404).json({ message: `ID${id} tidak ada didatabases!`});
+                return res.status(404).tanggal_pengembalianjson({ message: `ID${id} tidak ada didatabases!`});
             }
             res.json(detailpeminjaman);
     } catch (error) {
