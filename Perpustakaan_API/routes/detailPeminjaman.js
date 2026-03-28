@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const { id_transaksi, id_buku, } = req.body;
     //pengecekan id harus berupa angka
-        if(isNaN(id_transaksi) || (id_buku)){
+        if(isNaN(id_transaksi) ||  isNaN(id_buku)){
         return res.status(400).json({
             message: "ID harus berupa angka yang valid"
         });
