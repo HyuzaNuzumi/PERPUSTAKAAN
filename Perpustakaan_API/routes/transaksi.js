@@ -15,6 +15,14 @@ router.get('/', async (req, res) => {
 //tambahkan transaksi
 router.post('/', async (req, res) => {
     const { id_anggota, id_petugas, tanggal_status_tempo, status } = req.body;
+
+    //pengecekan apakah id angka yang valid
+    if(isNaN(id_anggota) || isNaN(id_petugas) || (!status) || status.trim() === "") {
+        return res.status(400).json({
+            message: "ID harus berupa angka yang valid",
+            undefined: true
+        });
+    }
     try {
         const transaksi_baru = await prisma.transaksi.create({
             data: {
@@ -33,6 +41,12 @@ router.post('/', async (req, res) => {
 //tampilkan transaksi
 router.get('/:id', async (req, res) => {
     const {id} = req.params;
+
+    if (isNaN(id)) {
+                return res.status(400).json({
+            message: "ID harus berupa angka yang valid"
+        });
+    }
     try {
         const transaksi = await prisma.transaksi.findUnique({
             where: { id_transaksi: Number(id) },
@@ -66,12 +80,19 @@ router.get('/status/:status', async (req, res) => {
 //delete transaksi
 router.delete('/:id', async (req,res) => {
     const { id } = req.params;
+    if (isNaN(id)) {
+        return res.status(400).json({
+            message: "ID harus berupa angka yang valid"
+        });
+    }
     try {
         await prisma.transaksi.delete({
             where: {id_transaksi: Number(id)}
         });
-        return res.status(200).json({ message: `Transaksi dengan ID ${id} berhasil dihapus!`})
+        return res.status(200).json({ message: `Transaksi berhasil dihapus!`})
     } catch (error) {
         res.status(500).json({error: error.message})
     }
 });
+
+module.exports = router;
