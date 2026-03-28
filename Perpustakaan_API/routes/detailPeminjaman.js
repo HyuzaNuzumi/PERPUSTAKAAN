@@ -15,6 +15,12 @@ router.get('/', async (req, res) => {
 //tambahkan detailPeminjaman
 router.post('/', async (req, res) => {
     const { id_transaksi, id_buku, } = req.body;
+    //pengecekan id harus berupa angka
+        if(isNaN(id_transaksi) || (id_buku)){
+        return res.status(400).json({
+            message: "ID harus berupa angka yang valid"
+        });
+    }
     try {
         const peminjamanBaru = await prisma.detailPeminjaman.create({
             data: {
@@ -24,13 +30,20 @@ router.post('/', async (req, res) => {
         });
         return res.status(201).json(peminjamanBaru);
     } catch (error) {
-        res.status(500).json({ message: 'Buku atau Transaksi tidak ditemukan!' });
+        res.status(500).json({ message: 'Gagal  mencatat pengembalian, Periksa ID Transaksi' });
     }
 });
 
 //tampilkan detailpeminjaman
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
+
+    //pengecekan id harus berupa angka
+    if(isNaN(id)){
+        return res.status(400).json({
+            message: "ID harus berupa angka yang valid"
+        })
+    }
     try {
         const detailpeminjaman = await prisma.detailPeminjaman.findUnique({
             where: { id_detail: Number(id)},
@@ -41,9 +54,9 @@ router.get('/:id', async (req, res) => {
         });
         //pengecekan apakah idDetail ada
             if(!detailpeminjaman) {
-                return res.status(404).tanggal_pengembalianjson({ message: `ID${id} tidak ada didatabases!`});
+                return res.status(404).json({ message: `ID${id} tidak ada didatabases!`});
             }
-            res.json(detailpeminjaman);
+            res.status(200).json(detailpeminjaman);
     } catch (error) {
         res.status(500).json({ message: `Terjadi kesalahan pada server!`});
     }
@@ -52,6 +65,13 @@ router.get('/:id', async (req, res) => {
 //menghapus transaksi
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
+
+    //pengecekan id harus berupa angka
+    if(isNaN(id)){
+            return res.status(400).json({
+                message: "ID harus berupa angka yang valid"
+            });
+        }
     try {
         const deletepeminjaman = await prisma.detailPeminjaman.delete({
             where: { id_detail: Number(id)}
