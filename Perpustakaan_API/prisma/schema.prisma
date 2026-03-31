@@ -9,6 +9,7 @@ generator client {
 
 model Anggota {
   id_anggota Int         @id @default(autoincrement())
+  kode_anggota String    @unique @db.VarChar(8)
   nama       String      @db.VarChar(25)
   alamat     String      @db.VarChar(25)
   transaksi  Transaksi[]
