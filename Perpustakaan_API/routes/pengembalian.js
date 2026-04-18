@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 
 //kirim data baru
 router.post('/', async (req,res) => {
-    const { id_transaksi, denda } = req. body;
+    const { id_transaksi, denda } = req.body;
         //pengecekan id harus berupa angka
          if(isNaN(id_transaksi)){
             return res.status(400).json({
