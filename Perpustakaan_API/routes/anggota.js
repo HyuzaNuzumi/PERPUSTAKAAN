@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const prisma = require('../src/lib/prisma');
 const authValidator = require('./validators/AuthValidator');
+
 //mengambil data dari anggota dan transaksinya
 router.get('/', async(req,res) => {
     try {
         const data = await prisma.anggota.findMany({
             include: { transaksi: true } //include untuk relasi
         });
-        res.json(data);
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
