@@ -40,9 +40,6 @@ app.use('/jabatan', jabatanRoutes);
 app.use('/petugas', petugasRoutes);
 
 //transaksi
-app.use('/petugas', petugasRoutes);
-
-//transaksi
 app.use('/transaksi', transaksiRoutes);
 
 //detailPeminjaman
