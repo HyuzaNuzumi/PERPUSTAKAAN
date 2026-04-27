@@ -10,7 +10,7 @@ class AuthValidator {
                 //memangil method dari service
                 const isName = await mencegahKodeSama.checkKodeAnggota(value);
                 if (isName) {
-                    throw new Error('Kode anggota sudah digunakan');
+                    throw new Error('Kode anggota sudah digunakan!');
                 }
                 return true;
             }),
