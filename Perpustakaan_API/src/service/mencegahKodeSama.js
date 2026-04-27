@@ -3,7 +3,7 @@ const prisma = require('../src/lib/prisma');
 class userService {
     /**
      * mengecek apakah username sudah ada didatabeses.
-     * @params { string } username
+     * @params Kode_anggota
      * @return { Promise<boolean> }
      */
 
